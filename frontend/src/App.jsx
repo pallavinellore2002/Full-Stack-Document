@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import DocumentationHub from "./pages/DocumentationHub";
 import JavaScriptDoc from "./pages/JavaScriptDoc";
 import TypeScriptDoc from "./pages/TypeScriptDoc";
@@ -23,36 +23,57 @@ import SQLiteDoc from "./pages/SQLiteDoc";
 import MySQLDoc from "./pages/MySQLDoc";
 import AWSDoc from "./pages/AWSDoc";
 import GitHubDoc from "./pages/GitHubDoc";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Navbar from "./components/Navbar";
+import ProtectedRoute from './components/ProtectedRoute';
+
+// Pages that should NOT show the navbar
+const noNavbarRoutes = ['/login', '/register'];
+
+function AppContent() {
+  const location = useLocation();
+  const showNavbar = !noNavbarRoutes.includes(location.pathname);
+
+  return (
+    <>
+      {showNavbar && <Navbar />}
+      <Routes>
+        <Route path="/" element={<DocumentationHub />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/html" element={<ProtectedRoute><HTMLDoc /></ProtectedRoute>} />
+        <Route path="/css" element={<ProtectedRoute><CSSDoc /></ProtectedRoute>} />
+        <Route path="/react" element={<ProtectedRoute><ReactDoc /></ProtectedRoute>} />
+        <Route path="/javascript" element={<ProtectedRoute><JavaScriptDoc /></ProtectedRoute>} />
+        <Route path="/typescript" element={<ProtectedRoute><TypeScriptDoc /></ProtectedRoute>} />
+        <Route path="/python" element={<ProtectedRoute><PythonDoc /></ProtectedRoute>} />
+        <Route path="/django" element={<ProtectedRoute><DjangoDoc /></ProtectedRoute>} />
+        <Route path="/fastapi" element={<ProtectedRoute><FastAPIDoc /></ProtectedRoute>} />
+        <Route path="/nodejs" element={<ProtectedRoute><NodeJSDoc /></ProtectedRoute>} />
+        <Route path="/express" element={<ProtectedRoute><ExpressDoc /></ProtectedRoute>} />
+        <Route path="/sqlite" element={<ProtectedRoute><SQLiteDoc /></ProtectedRoute>} />
+        <Route path="/mysql" element={<ProtectedRoute><MySQLDoc /></ProtectedRoute>} />
+        <Route path="/postgresql" element={<ProtectedRoute><PostgreSQLDoc /></ProtectedRoute>} />
+        <Route path="/mongodb" element={<ProtectedRoute><MongoDBDoc /></ProtectedRoute>} />
+        <Route path="/redis" element={<ProtectedRoute><RedisDoc /></ProtectedRoute>} />
+        <Route path="/aws" element={<ProtectedRoute><AWSDoc /></ProtectedRoute>} />
+        <Route path="/vercel" element={<ProtectedRoute><VercelDoc /></ProtectedRoute>} />
+        <Route path="/netlify" element={<ProtectedRoute><NetlifyDoc /></ProtectedRoute>} />
+        <Route path="/docker" element={<ProtectedRoute><DockerDoc /></ProtectedRoute>} />
+        <Route path="/postman" element={<ProtectedRoute><PostmanDoc /></ProtectedRoute>} />
+        <Route path="/github" element={<ProtectedRoute><GitHubDoc /></ProtectedRoute>} />
+        <Route path="/git-basics" element={<ProtectedRoute><GitBasicsDoc /></ProtectedRoute>} />
+        <Route path="/github-actions" element={<ProtectedRoute><GitHubActionsDoc /></ProtectedRoute>} />
+      </Routes>
+    </>
+  );
+}
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<DocumentationHub />} />
-        <Route path="/html" element={<HTMLDoc />} />
-        <Route path="/css" element={<CSSDoc />} />
-        <Route path="/react" element={<ReactDoc />} />
-        <Route path="/javascript" element={<JavaScriptDoc />} />
-        <Route path="/typescript" element={<TypeScriptDoc />} />
-        <Route path="/python" element={<PythonDoc />} />
-        <Route path="/django" element={<DjangoDoc />} />
-        <Route path="/fastapi" element={<FastAPIDoc />} />
-        <Route path="/nodejs" element={<NodeJSDoc />} />
-        <Route path="/express" element={<ExpressDoc />} />
-        <Route path="/sqlite" element={<SQLiteDoc />} />
-        <Route path="/mysql" element={<MySQLDoc />} />
-        <Route path="/postgresql" element={<PostgreSQLDoc />} />
-        <Route path="/mongodb" element={<MongoDBDoc />} />
-        <Route path="/redis" element={<RedisDoc />} />
-        <Route path="/aws" element={<AWSDoc />} />
-        <Route path="/vercel" element={<VercelDoc />} />
-        <Route path="/netlify" element={<NetlifyDoc />} />
-        <Route path="/docker" element={<DockerDoc />} />
-        <Route path="/postman" element={<PostmanDoc />} />
-        <Route path="/github" element={<GitHubDoc />} />
-        <Route path="/git-basics" element={<GitBasicsDoc />} />
-        <Route path="/github-actions" element={<GitHubActionsDoc />} />
-      </Routes>
+      <AppContent />
     </BrowserRouter>
   );
 }
